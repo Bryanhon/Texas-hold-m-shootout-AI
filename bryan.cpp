@@ -5,11 +5,8 @@ using namespace std;
 bryan::bryan(unsigned char instance = 0)
 :Player(instance)
 {
-    srand(time(NULL));
-    mode = rand() % 4;
-
-    std::cout << "Bryan: I'm not trapped here with you, you are trapped here with me..." << endl;
-    std::cout << "And my agression mode is at: " << mode << endl;
+    std::cout << "Bryan: I'm not trapped here with you, you are trapped here "
+                 "with me..." << endl;
 }
 
 bryan::~bryan() // Mem leak? Never gets called?
@@ -24,32 +21,31 @@ const char *bryan::getName() const
 
 int bryan::willYouRaise(unsigned int totalBet)
 {
-    Game game;
     PokerRank handRank = getHand().getMyRank();
     PokerRank tableRank = getCommunityRank();
-    cout << game.getPlayerLocation() << "------------------%%%%%%%%%%%%%%%%%%%%%%%%%%%----------------" << endl;
+    cout << totalBet << "-------------------------------------------------------------------" << endl;
 
-    switch (handRank.getCategory()) {
-    case ONE_PAIR:
-        cout << "ONE" << endl;
-    case TWO_PAIR:
-        cout << "TWO" << endl;
-    case THREE_OF_A_KIND:
-        cout << "THREE" << endl;
+    if (table.getCommunityCards().empty() && (totalBet > game.getBlind() * 3)) {
+            return -1;
+        }
+
+    return 0;
+}
+
+int bryan::gameState()
+{
+    // 0 = Pre-flop
+    // 1 = Flop
+    // 2 = Turn
+    // 3 = River
+    // -1 = error 404 shit not found
+    if (table.getCommunityCards().empty())
         return 0;
-    case STRAIGHT:
-        cout << "STRIAGHT" << endl;
-    case FLUSH:
-        cout << "FLUSH" << endl;
-    case FULL_HOUSE:
-        cout << "FULL" << endl;
-    case FOUR_OF_A_KIND:
-        cout << "FOUR" << endl;
-    case STRAIGHT_FLUSH:
-        cout << "STRIAIGHT_FLUSH" << endl;
-    default:
-        return 0;
-    }
+    else if (table.getCommunityCards().at(2) != nullptr)
+        return 1;
+    else if (table.getCommunityCards().at(4) != nullptr)
+        return 2;
+    return -1;
 }
 
 //if( myHandRank.getCategory() >= THREE_OF_A_KIND )

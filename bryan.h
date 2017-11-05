@@ -6,6 +6,7 @@
 //#include <thread>
 #include "player.h"
 #include "game.h"
+#include "table.h"
 
 class bryan : public Player {
 
@@ -14,12 +15,14 @@ public:
     ~bryan();
     const char *getName() const;
     int willYouRaise(unsigned int totalBet);
+    int gameState(); //returns the state of the game
 
 protected:
 
 private:
     unsigned int mode = 0;
     Game game;
+    Table table;
 
 };
 
