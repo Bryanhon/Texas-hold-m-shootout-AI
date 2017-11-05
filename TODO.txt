@@ -1,0 +1,4 @@
+- Make threaded game analyzer?
+- Output to files
+- agression mode
+- make the damn thing smarter
